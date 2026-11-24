@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Folder, FileText, Download, Play, Music, Calendar } from 'lucide-react';
+import { Folder, FileText, Download, Play, Music, Calendar, Sun, Moon } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import api, { getMediaUrl } from '../api/client';
 import LightboxModal from '../components/media/LightboxModal';
 
 export default function SharedViewPage({ token }) {
+  const { theme, toggleTheme } = useAuth();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -56,16 +58,26 @@ export default function SharedViewPage({ token }) {
     <div style={{ minHeight: '100vh', background: 'var(--color-bg)', padding: '24px 16px' }}>
       <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
         {/* Brand header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
-          <div className="brand-icon">
-            <Folder size={18} />
-          </div>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: '1.1rem' }}>Family Archive</div>
-            <div style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>
-              Shared with you (Read-only{allowDownload ? ', download enabled' : ''})
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div className="brand-icon">
+              <Folder size={18} />
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: '1.1rem' }}>Family Archive</div>
+              <div style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>
+                Shared with you (Read-only{allowDownload ? ', download enabled' : ''})
+              </div>
             </div>
           </div>
+          <button
+            className="btn btn-ghost btn-sm"
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            aria-label="Toggle color theme"
+          >
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
         </div>
 
         {/* View Folder */}

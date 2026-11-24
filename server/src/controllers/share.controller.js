@@ -150,7 +150,8 @@ async function toggleObjectDownload(req, res, next) {
  */
 async function getSharedItem(req, res, next) {
   try {
-    const { token } = req.params;
+    const rawToken = req.params.token || '';
+    const token = rawToken.trim();
 
     // Check if token belongs to folder share
     const [folderShare] = await pool.query(`
@@ -200,7 +201,7 @@ async function getSharedItem(req, res, next) {
       SELECT os.object_id, os.allow_download, o.title, o.note, o.created_at, f.name AS folder_name
       FROM object_shares os
       JOIN objects o ON o.id = os.object_id
-      JOIN folders f ON f.id = o.folder_id
+      LEFT JOIN folders f ON f.id = o.folder_id
       WHERE os.token = ? AND o.deleted_at IS NULL
     `, [token]);
 

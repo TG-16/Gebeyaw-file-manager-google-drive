@@ -20,11 +20,40 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isNewFolderModalOpen, setIsNewFolderModalOpen] = useState(false);
 
-  // Check if viewing a public share link (/share/:token)
-  const pathname = window.location.pathname;
-  if (pathname.startsWith('/share/')) {
-    const token = pathname.replace('/share/', '').split('/')[0];
-    return <SharedViewPage token={token} />;
+  // Helper to extract share token from path (/share/:token), hash (/#/share/:token), or query (?share=:token)
+  const getShareToken = () => {
+    // 1. Pathname check: /share/:token
+    const pathMatch = window.location.pathname.match(/\/share\/([a-zA-Z0-9-]+)/);
+    if (pathMatch) return pathMatch[1];
+
+    // 2. Hash check: #/share/:token or #share/:token
+    const hashMatch = window.location.hash.match(/#\/?share\/([a-zA-Z0-9-]+)/);
+    if (hashMatch) return hashMatch[1];
+
+    // 3. Search query check fallback: ?share=:token
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('share')) return urlParams.get('share');
+
+    return null;
+  };
+
+  const [shareToken, setShareToken] = useState(() => getShareToken());
+
+  useEffect(() => {
+    const handleUrlChange = () => {
+      setShareToken(getShareToken());
+    };
+    window.addEventListener('popstate', handleUrlChange);
+    window.addEventListener('hashchange', handleUrlChange);
+    return () => {
+      window.removeEventListener('popstate', handleUrlChange);
+      window.removeEventListener('hashchange', handleUrlChange);
+    };
+  }, []);
+
+  // Public share link view
+  if (shareToken) {
+    return <SharedViewPage token={shareToken} />;
   }
 
   if (loading) {
