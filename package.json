@@ -1,0 +1,12 @@
+{
+  "name": "family-file-manager",
+  "version": "1.0.0",
+  "description": "Personal File Manager with Google Drive integration for Gebeyaw's father",
+  "scripts": {
+    "server": "npm --prefix server start",
+    "server:dev": "npm --prefix server run dev",
+    "client": "npm --prefix client run dev",
+    "setup:drive": "npm --prefix server run setup:drive",
+    "build": "npm --prefix client run build"
+  }
+}
