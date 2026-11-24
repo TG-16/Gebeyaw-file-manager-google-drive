@@ -8,6 +8,8 @@ server/.env
 client/.env
 client/.env.local
 client/.env.*.local
+client/.env.production
+!client/.env.development
 
 # Google Cloud OAuth & Service Account Keys
 *client_secret*.json
@@ -47,6 +49,7 @@ dist/
 client/dist/
 build/
 client/build/
+server/deployments
 
 # ==========================================
 # Logs & Debugging

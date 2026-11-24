@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, ZoomIn, ZoomOut, RotateCw, Download, Maximize2 } from 'lucide-react';
-import { getAuthToken } from '../../api/client';
+import { getAuthToken, getMediaUrl } from '../../api/client';
 
 export default function LightboxModal({ media, shareToken, allowDownload = true, onClose }) {
   const [zoomLevel, setZoomLevel] = useState(1);
@@ -69,8 +69,8 @@ export default function LightboxModal({ media, shareToken, allowDownload = true,
   const handleMouseUp = () => setIsDragging(false);
 
   const authParam = shareToken ? `shareToken=${shareToken}` : (authToken ? `token=${authToken}` : '');
-  const streamUrl = `/api/v1/media/${media.id}/stream${authParam ? `?${authParam}` : ''}`;
-  const downloadUrl = `/api/v1/media/${media.id}/download${authParam ? `?${authParam}` : ''}`;
+  const streamUrl = getMediaUrl(`/api/v1/media/${media.id}/stream${authParam ? `?${authParam}` : ''}`);
+  const downloadUrl = getMediaUrl(`/api/v1/media/${media.id}/download${authParam ? `?${authParam}` : ''}`);
 
   return (
     <div className="lightbox-modal">

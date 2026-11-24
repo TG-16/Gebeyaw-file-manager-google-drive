@@ -2,9 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
-const dotenv = require('dotenv');
 
-dotenv.config();
+try {
+  require('dotenv').config();
+} catch (e) {}
 
 const authRoutes = require('./routes/auth.routes');
 const folderRoutes = require('./routes/folder.routes');
@@ -31,8 +32,13 @@ const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:5173';
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, or same-origin)
-      if (!origin || origin === allowedOrigin || origin.startsWith('http://localhost:')) {
+      // Allow requests with no origin, configured CLIENT_URL, localhost, or *.gebeyawsolar.com
+      if (
+        !origin ||
+        origin === allowedOrigin ||
+        origin.startsWith('http://localhost:') ||
+        origin.endsWith('gebeyawsolar.com')
+      ) {
         return callback(null, true);
       }
       return callback(null, true); // Dev convenience

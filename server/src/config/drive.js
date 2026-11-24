@@ -1,7 +1,8 @@
 const { google } = require('googleapis');
-const dotenv = require('dotenv');
 
-dotenv.config();
+try {
+  require('dotenv').config();
+} catch (e) {}
 
 let driveClient = null;
 

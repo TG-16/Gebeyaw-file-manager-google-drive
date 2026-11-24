@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Edit2, Share2, Trash2, Plus, Download, Image, Video, Music, Calendar, Folder, Play } from 'lucide-react';
-import api, { getAuthToken } from '../api/client';
+import api, { getAuthToken, getMediaUrl } from '../api/client';
 import LightboxModal from '../components/media/LightboxModal';
 import ShareModal from '../components/modals/ShareModal';
 import CreateObjectModal from '../components/modals/CreateObjectModal';
@@ -250,7 +250,7 @@ export default function ObjectDetailPage({ objectId, onBack }) {
                 <div key={m.id} className="media-item-box" onClick={() => setActiveMedia(m)}>
                   {m.media_type === 'photo' ? (
                     <img
-                      src={`/api/v1/media/${m.id}/stream${authToken ? `?token=${authToken}` : ''}`}
+                      src={getMediaUrl(`/api/v1/media/${m.id}/stream${authToken ? `?token=${authToken}` : ''}`)}
                       alt={m.original_name}
                       className="media-item-img"
                       loading="lazy"
@@ -258,7 +258,7 @@ export default function ObjectDetailPage({ objectId, onBack }) {
                   ) : m.media_type === 'video' ? (
                     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                       <video
-                        src={`/api/v1/media/${m.id}/stream${authToken ? `?token=${authToken}` : ''}#t=0.1`}
+                        src={getMediaUrl(`/api/v1/media/${m.id}/stream${authToken ? `?token=${authToken}` : ''}#t=0.1`)}
                         className="media-item-img"
                         muted
                         preload="metadata"
@@ -302,7 +302,7 @@ export default function ObjectDetailPage({ objectId, onBack }) {
                     onClick={(e) => e.stopPropagation()}
                   >
                     <a
-                      href={`/api/v1/media/${m.id}/download${authToken ? `?token=${authToken}` : ''}`}
+                      href={getMediaUrl(`/api/v1/media/${m.id}/download${authToken ? `?token=${authToken}` : ''}`)}
                       download
                       className="btn-ghost"
                       style={{

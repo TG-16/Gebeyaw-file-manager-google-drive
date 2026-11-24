@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Folder, FileText, Download, Play, Music, Calendar } from 'lucide-react';
-import api from '../api/client';
+import api, { getMediaUrl } from '../api/client';
 import LightboxModal from '../components/media/LightboxModal';
 
 export default function SharedViewPage({ token }) {
@@ -88,7 +88,7 @@ export default function SharedViewPage({ token }) {
                   <div className="object-preview">
                     {obj.primaryMedia?.media_type === 'photo' ? (
                       <img
-                        src={`/api/v1/media/${obj.primaryMedia.id}/stream?shareToken=${token}`}
+                        src={getMediaUrl(`/api/v1/media/${obj.primaryMedia.id}/stream?shareToken=${token}`)}
                         alt={obj.title}
                         className="object-preview-img"
                         loading="lazy"
@@ -96,7 +96,7 @@ export default function SharedViewPage({ token }) {
                     ) : obj.primaryMedia?.media_type === 'video' ? (
                       <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                         <video
-                          src={`/api/v1/media/${obj.primaryMedia.id}/stream?shareToken=${token}#t=0.1`}
+                          src={getMediaUrl(`/api/v1/media/${obj.primaryMedia.id}/stream?shareToken=${token}#t=0.1`)}
                           className="object-preview-img"
                           muted
                           preload="metadata"
@@ -200,7 +200,7 @@ export default function SharedViewPage({ token }) {
                       >
                         {m.media_type === 'photo' ? (
                           <img
-                            src={`/api/v1/media/${m.id}/stream?shareToken=${token}`}
+                            src={getMediaUrl(`/api/v1/media/${m.id}/stream?shareToken=${token}`)}
                             alt={m.original_name}
                             className="media-item-img"
                             loading="lazy"
@@ -208,7 +208,7 @@ export default function SharedViewPage({ token }) {
                         ) : m.media_type === 'video' ? (
                           <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                             <video
-                              src={`/api/v1/media/${m.id}/stream?shareToken=${token}#t=0.1`}
+                              src={getMediaUrl(`/api/v1/media/${m.id}/stream?shareToken=${token}#t=0.1`)}
                               className="media-item-img"
                               muted
                               preload="metadata"
@@ -233,7 +233,7 @@ export default function SharedViewPage({ token }) {
                             onClick={(e) => e.stopPropagation()}
                           >
                             <a
-                              href={`/api/v1/media/${m.id}/download?shareToken=${token}`}
+                              href={getMediaUrl(`/api/v1/media/${m.id}/download?shareToken=${token}`)}
                               download
                               className="btn-ghost"
                               style={{

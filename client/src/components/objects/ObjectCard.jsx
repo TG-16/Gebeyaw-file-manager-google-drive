@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Play, Music, FileText, MoreVertical, Edit2, Share2, CornerUpRight, Trash2, Paperclip } from 'lucide-react';
-import { getAuthToken } from '../../api/client';
+import { getAuthToken, getMediaUrl } from '../../api/client';
 
 export default function ObjectCard({ object, onClick, onEdit, onMove, onShare, onDelete }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -38,7 +38,7 @@ export default function ObjectCard({ object, onClick, onEdit, onMove, onShare, o
       <div className="object-preview">
         {primaryMedia?.media_type === 'photo' ? (
           <img
-            src={`/api/v1/media/${primaryMedia.id}/stream${authToken ? `?token=${authToken}` : ''}`}
+            src={getMediaUrl(`/api/v1/media/${primaryMedia.id}/stream${authToken ? `?token=${authToken}` : ''}`)}
             alt={object.title}
             className="object-preview-img"
             loading="lazy"
@@ -47,7 +47,7 @@ export default function ObjectCard({ object, onClick, onEdit, onMove, onShare, o
           <div style={{ position: 'relative', width: '100%', height: '100%' }}>
             {/* First frame preview via video element with preload */}
             <video
-              src={`/api/v1/media/${primaryMedia.id}/stream${authToken ? `?token=${authToken}` : ''}#t=0.1`}
+              src={getMediaUrl(`/api/v1/media/${primaryMedia.id}/stream${authToken ? `?token=${authToken}` : ''}#t=0.1`)}
               preload="metadata"
               className="object-preview-img"
               muted
