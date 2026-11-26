@@ -130,14 +130,16 @@
   overflow: hidden;
   position: relative;
   user-select: none;
+  touch-action: none;
+  -webkit-user-select: none;
 }
 
 .lightbox-zoom-target {
   max-width: 90vw;
   max-height: 85vh;
   object-fit: contain;
-  transition: transform 120ms ease-out;
   cursor: grab;
+  touch-action: none;
 }
 
 .lightbox-zoom-target:active {
